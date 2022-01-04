@@ -1,10 +1,9 @@
 import { User } from "../../model/User";
-import { IUsersRepository, ICreateUserDTO } from "../IUsersRepository";
+import { ICreateUserDTO, IUsersRepository } from "../IUsersRepository";
 
 class UsersRepository implements IUsersRepository {
-  private users: User[];
-
   private static INSTANCE: UsersRepository;
+  private users: User[];
 
   private constructor() {
     this.users = [];
@@ -19,23 +18,32 @@ class UsersRepository implements IUsersRepository {
   }
 
   create({ name, email }: ICreateUserDTO): User {
-    // Complete aqui
+    const user = new User();
+    Object.assign(user, { email, name });
+    this.users.push(user);
+    return user;
   }
 
   findById(id: string): User | undefined {
-    // Complete aqui
+    return this.users.find((user) => user.id === id);
   }
 
   findByEmail(email: string): User | undefined {
-    // Complete aqui
+    return this.users.find((user) => user.email === email);
   }
 
   turnAdmin(receivedUser: User): User {
-    // Complete aqui
+    const indexUser = this.users.findIndex((user) => user.id === receivedUser.id);
+    if (indexUser < 0) {
+      throw new Error("User not found");
+    }
+    this.users[indexUser].admin = true;
+    this.users[indexUser].updated_at = new Date();
+    return this.users[indexUser];
   }
 
   list(): User[] {
-    // Complete aqui
+    return this.users;
   }
 }
 
