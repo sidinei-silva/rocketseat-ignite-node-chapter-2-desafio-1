@@ -1,10 +1,9 @@
 import { User } from "../../model/User";
-import { IUsersRepository, ICreateUserDTO } from "../IUsersRepository";
+import { ICreateUserDTO, IUsersRepository } from "../IUsersRepository";
 
 class UsersRepository implements IUsersRepository {
-  private users: User[];
-
   private static INSTANCE: UsersRepository;
+  private users: User[];
 
   private constructor() {
     this.users = [];
